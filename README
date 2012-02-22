@@ -1,0 +1,26 @@
+赤黒木の生成過程をGIFアニメ化してみるテスト
+  (c)2012 by naoya_t
+
+◆必要なもの
+  graphviz
+  ImageMagick
+  sips (MacOSX。gifをbmpに変換するのに使ってます）
+  あと GCC とか AWK とか
+
+◆ファイル解説
+
+  rbt_gen.cc
+    赤黒木に値を１つずつ挿入しながらgraphvizのDOT言語ファイルにダンプするC++プログラム。
+    0から99まで順に挿入しているのに勝手にバランスを取っていく様をアニメ化したい。
+
+  topcenter.c
+    graphvizが出力したグラフ画像（をBMPに変換したもの）を走査してrootノードの位置を見つけ、
+      <画像幅> <画像高さ> <rootノードの上端x座標> <同y座標>
+    を出力する自作ツール。GIFアニメ化する際の位置合わせに必要。
+
+  rbt_anim_gen.awk
+    graphvizが出力したgifファイル群からGIFアニメを作るスクリプト。
+
+◆ライセンス
+
+  NYSL Version 0.9982 に従います。http://www.kmonos.net/nysl/

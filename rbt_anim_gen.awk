@@ -8,7 +8,8 @@ BEGIN {
   hmax = 0
   for (i=0; i<=N; i++) {
     name = sprintf("rbt_%03d", i)
-    system(sprintf("sips -s format bmp %s.gif --out %s.bmp > /dev/null", name, name))
+#    system(sprintf("sips -s format bmp %s.gif --out %s.bmp > /dev/null", name, name))
+    system(sprintf("convert %s.gif %s.bmp", name, name))
     cmd = sprintf("./topcenter %s.bmp", name)
     cmd | getline
     if ($3 < 0) $3 = 0

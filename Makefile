@@ -12,7 +12,7 @@ rbt_000.dot: rbt_gen
 rbt_000.gif: rbt_000.dot
 	for f in rbt_*.dot ; do dot -Tgif "$$f" -o `basename $$f .dot`.gif ; done
 
-rbt_anim.gif: rbt_000.gif topcenter
+rbt_anim.gif: rbt_000.gif rbt_anim_gen.awk topcenter
 	awk -f rbt_anim_gen.awk
 
 rbt_gen: rbt_gen.cc

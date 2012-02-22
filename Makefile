@@ -6,6 +6,8 @@
 .gif.bmp:
 	convert $< `basename $< .gif`.bmp
 
+all: rbt_anim.gif
+
 rbt_000.dot: rbt_gen
 	./rbt_gen
 

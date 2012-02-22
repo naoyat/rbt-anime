@@ -107,7 +107,7 @@ class Tree {
     fputs("  edge [ color = black, weight = 1 ];\n", fp);
 
     stack<Node*> st;
-    Node *n = head->right; // ignore the head (-1)
+    Node *n = head->right;  // ignore the head (-1)
     while ((n && n != z) || !st.empty()) {
       if (n && n != z) {
         // if (n->key >= 0) {
@@ -123,7 +123,7 @@ class Tree {
           fprintf(fp, "  N%d -- L%d;\n", n->serial, n->serial);
         }
         st.push(n);
-        n = n->left; // if (n == z) n = NULL;
+        n = n->left;  // if (n == z) n = NULL;
       } else {
         n = st.top(); st.pop();
         if (n->right && n->right != z) {
@@ -152,19 +152,40 @@ class Tree {
   Node *x, *p, *g, *gg;
 };
 
-int main() {
+int main(int argc, char **argv) {
   Tree tree;
 
   int file_id = 0;
 
   srand(clock());
 
+  enum { ASC, DESC, RAND };
+  int mode = ASC;
+  if (argc >= 2) {
+    if (strcmp(argv[1], "asc") == 0) mode = ASC;
+    else if (strcmp(argv[1], "desc") == 0) mode = DESC;
+    else if (strcmp(argv[1], "rand") == 0) mode = RAND;
+  }
+
   tree.dot("rbt", file_id++);
 
   for (int i=0; i<100; i++) {
-    //int val = 'A' + rand() % 26;
-    //int val = 'A' + i % 26;
-    tree.insert(i, i);
+    // int val = 'A' + rand() % 26;
+    // int val = 'A' + i % 26;
+    int val;
+    switch (mode) {
+      case RAND:
+        val = rand() % 100;
+        break;
+      case DESC:
+        val = 100 - i;
+        break;
+      case ASC:
+      default:
+        val = i;
+        break;
+    }
+    tree.insert(val, val);
     tree.dot("rbt", file_id++);
   }
 

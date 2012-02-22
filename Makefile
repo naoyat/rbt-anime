@@ -4,7 +4,7 @@
 	dot -Tgif $< -o $@
 
 .gif.bmp:
-	sips -s format bmp $< --out `basename $< .gif`.bmp
+	convert $< `basename $< .gif`.bmp
 
 rbt_000.dot: rbt_gen
 	./rbt_gen

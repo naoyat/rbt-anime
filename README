@@ -4,7 +4,6 @@
 ◆必要なもの
   graphviz
   ImageMagick
-  sips (MacOSX。gifをbmpに変換するのに使ってます）
   あと GCC とか AWK とか
 
 ◆ファイル解説

@@ -45,18 +45,17 @@ int dump_bmp(FILE *fp) {
   printf("BITMAPINFOHEADER. size:%d width:%d height:%d planes:%d bitCount:%d compression:%d sizeImage:%d pels/m:(%d %d) clrUsed:%d clrImportant:%d\n",
          (int)biSize, (int)biWidth, (int)biHeight, (int)biPlanes, (int)biBitCount,
          (int)biCompression, (int)biSizeImage, (int)biXPelsPerMeter, (int)biYPelsPerMeter, (int)biClrUsed, (int)biClrImportant);
-  /**/
+  */
   fseek(fp, bfOffbits, SEEK_SET);
   int datasize = bfSize - bfOffbits;
-  // printf("%d = %d x %d x %d\n", datasize, biBitCount/8, biWidth, biHeight);
 
   int x, y;
-  int blank = 1, from = -1, to = -1;
+  int blank = 1, from = -1, to = -1, last_from = -1, last_to = -1, last_y = -1;
   for (y=0; y<biHeight; y++) {
+    from = to = -1;
     for (x=0; x<biWidth; x++) {
       uint32_t color;
       fread(&color, 4, 1, fp);
-      //color &= 0x00ffffff;
       color &= 0x000000ff;
       if (color < 0x80) {
         blank = 0;
@@ -67,11 +66,13 @@ int dump_bmp(FILE *fp) {
       // printf("%c", "$#=:."[color/51]);
     }
     // printf("\n");
-    if (!blank) break;
+    if (from >= 0) { last_from = from; last_to = to; last_y = y; }
+    if (isTopdownDIB && !blank) { last_y = y; break; }
   }
+  if (!isTopdownDIB) last_y = (biHeight-1) - last_y;
+
   // printf("size:(%d, %d) topcenter:(%d, %d)\n", biWidth, biHeight, (from + to) / 2, y);
-  printf("%d %d %d %d\n", biWidth, biHeight, (from + to) / 2, y);
-  // printf("%d x %d x %d = %d\n", biHeight, biWidth, 4, biHeight*biWidth*4);
+  printf("%d %d %d %d\n", biWidth, biHeight, (last_from + last_to) / 2, last_y);
 
   return 0;
 }
